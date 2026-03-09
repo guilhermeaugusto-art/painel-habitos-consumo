@@ -635,11 +635,11 @@ export const AppStyles = `
     box-shadow: 0 0 10px rgba(120, 189, 66, 0.4);
   }
   
-  .grid { display: grid; gap: 32px; }
+  .grid { display: grid; gap: 24px; align-items: stretch; }
   .grid-cols-1 { grid-template-columns: 1fr; }
   .grid-cols-2 { grid-template-columns: 1fr 1fr; }
   .grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
-  .grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
   .col-span-2 { grid-column: span 2; }
   
   .card {
@@ -684,13 +684,25 @@ export const AppStyles = `
     gap: 12px;
   }
   .card .card-description {
-    font-size: 0.95rem; 
-    font-weight: 500;   
+    font-size: 0.95rem;
+    font-weight: 500;
     color: var(--subtle-text-color);
     line-height: 1.6;
     margin-top: 0;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     flex-grow: 1;
+  }
+
+  /* --- Chart Standardization --- */
+  .card canvas {
+    width: 100% !important;
+    max-height: 280px;
+  }
+  .card > div[style*="position: relative"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 
   .explain-btn {
@@ -728,8 +740,8 @@ export const AppStyles = `
     border-top: 4px solid var(--primary-orange);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 16px;
+    justify-content: flex-start;
+    gap: 12px;
     height: 100%;
     background-color: var(--card-bg-color);
   }
@@ -738,15 +750,17 @@ export const AppStyles = `
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 14px;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+    flex-shrink: 0;
   }
   .kpi-icon {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
     background-color: rgba(247, 141, 30, 0.1);
-    border-radius: 14px;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -754,24 +768,26 @@ export const AppStyles = `
     color: var(--primary-orange);
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
   }
-  .kpi-card .label { 
-      font-size: 0.75rem; 
-      font-weight: 700; 
-      color: var(--subtle-text-color); 
-      margin-bottom: 4px;
+  .kpi-card .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--subtle-text-color);
+      margin-bottom: 2px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
   }
-  .kpi-card .value { 
-      font-size: 1.5rem; 
-      font-weight: 800; 
-      color: var(--text-color); 
+  .kpi-card .value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-color);
       line-height: 1.2;
       letter-spacing: -0.02em;
+      word-break: break-word;
   }
   .kpi-card .card-description {
     margin-bottom: 0;
-    font-size: 0.85rem;
+    margin-top: auto;
+    font-size: 0.8rem;
     line-height: 1.5;
     color: var(--subtle-text-color);
   }
@@ -1290,6 +1306,10 @@ export const AppStyles = `
   }
 
   /* --- MOBILE OPTIMIZATION --- */
+  @media (max-width: 1024px) {
+    .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
   @media (max-width: 768px) {
     .login-page {
         align-items: flex-start;

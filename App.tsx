@@ -1781,9 +1781,13 @@ const Dashboard = ({
     clone.classList.add("force-desktop");
 
     const elementsToRemove = clone.querySelectorAll(
-      ".explain-btn, .csv-export-button, .pdf-button, .ricardo-fab, .modal-close-btn, .mobile-menu-toggle, .theme-toggle-btn"
+      ".explain-btn, .csv-export-button, .pdf-button, .ricardo-fab, .modal-close-btn, .mobile-menu-toggle, .theme-toggle-btn, .sidebar-overlay, .sidebar"
     );
     elementsToRemove.forEach((el) => el.remove());
+
+    // Remove min-height from main-content clone (prevents huge whitespace)
+    clone.style.minHeight = "0";
+    clone.style.flex = "none";
 
     // Inject PDF specific styles
     const style = document.createElement("style");
@@ -1792,60 +1796,149 @@ const Dashboard = ({
         font-family: 'Inter', sans-serif !important;
         color: #111 !important;
         background: #fff !important;
-        padding: 40px !important;
+        padding: 28px !important;
         width: 1080px !important;
         max-width: 1080px !important;
         min-width: 1080px !important;
+        min-height: 0 !important;
+        height: auto !important;
         box-sizing: border-box !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
+        overflow: visible !important;
       }
       .pdf-export-mode * {
         box-sizing: border-box !important;
+        transition: none !important;
+        animation: none !important;
       }
       .pdf-export-mode .card {
         box-shadow: none !important;
-        border: 1px solid #e5e7eb !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 10px !important;
         background: #fff !important;
-        margin-bottom: 20px !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        padding: 24px !important;
+        margin-bottom: 0 !important;
+        padding: 18px !important;
+        overflow: hidden !important;
+        transform: none !important;
+        content-visibility: visible !important;
+        contain-intrinsic-size: auto !important;
+      }
+      .pdf-export-mode .card::after {
+        display: none !important;
+      }
+      .pdf-export-mode .card:hover {
+        transform: none !important;
+        box-shadow: none !important;
       }
       .pdf-export-mode h1, .pdf-export-mode h2, .pdf-export-mode h3 {
         color: #000 !important;
         margin-top: 0 !important;
       }
-      .pdf-export-mode .kpi-card {
-        border-top: 4px solid #F78D1E !important;
-        padding: 16px !important;
-        height: 100% !important;
+      .pdf-export-mode .section-header {
+        margin-bottom: 10px !important;
       }
-      .pdf-export-mode .kpi-value {
-        font-size: 1.8rem !important;
+      .pdf-export-mode .section-header h2 {
+        font-size: 16px !important;
+        margin-bottom: 0 !important;
+      }
+      .pdf-export-mode .dashboard-section {
+        margin-bottom: 14px !important;
+        padding: 0 !important;
+      }
+      .pdf-export-mode .kpi-card {
+        border-top: 3px solid #F78D1E !important;
+        padding: 12px !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+      }
+      .pdf-export-mode .kpi-header {
+        margin-bottom: 0 !important;
+        gap: 10px !important;
+      }
+      .pdf-export-mode .kpi-icon {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        border-radius: 8px !important;
+      }
+      .pdf-export-mode .kpi-card .label {
+        font-size: 0.6rem !important;
+        margin-bottom: 1px !important;
+      }
+      .pdf-export-mode .kpi-card .value {
+        font-size: 1.1rem !important;
         color: #000 !important;
+        font-weight: 800 !important;
+      }
+      .pdf-export-mode .kpi-card .card-description {
+        font-size: 0.7rem !important;
+        line-height: 1.4 !important;
+        margin-top: 4px !important;
+        color: #555 !important;
+      }
+      .pdf-export-mode .card h3 {
+        font-size: 0.95rem !important;
+        margin-bottom: 10px !important;
+        gap: 8px !important;
+      }
+      .pdf-export-mode .card .card-description {
+        font-size: 0.8rem !important;
+        margin-bottom: 12px !important;
       }
       .pdf-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #F78D1E;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 3px solid #F78D1E;
         width: 100% !important;
       }
       .pdf-footer {
-        margin-top: 40px;
-        padding-top: 10px;
+        margin-top: 20px;
+        padding-top: 8px;
         border-top: 1px solid #e5e7eb;
         text-align: center;
-        font-size: 10px;
+        font-size: 9px;
         color: #6b7280;
         width: 100% !important;
       }
       .pdf-export-mode .grid {
         display: grid !important;
-        gap: 20px !important;
+        gap: 12px !important;
         width: 100% !important;
+        align-items: stretch !important;
+      }
+      .pdf-export-mode .col-span-2 {
+        grid-column: span 2 !important;
+      }
+      .pdf-export-mode a {
+        color: #F78D1E !important;
+        text-decoration: underline !important;
+        font-weight: 600 !important;
+      }
+      .pdf-export-mode table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 11px !important;
+      }
+      .pdf-export-mode table th,
+      .pdf-export-mode table td {
+        padding: 6px 8px !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        text-align: left !important;
+      }
+      .pdf-export-mode table th {
+        background: #f3f4f6 !important;
+        font-weight: 700 !important;
+        color: #111 !important;
+      }
+      .pdf-export-mode .gauge-chart-card canvas,
+      .pdf-export-mode .gauge-chart-card img {
+        max-height: 200px !important;
       }
     `;
     clone.appendChild(style);
@@ -1859,7 +1952,7 @@ const Dashboard = ({
       <div style="text-align: right;">
         <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #111;">Relatório de Inteligência</h1>
         <p style="margin: 4px 0 0; color: #4b5563; font-size: 14px;">
-          Análise Regional: <strong>${filters.region || "Brasil"}</strong>
+          Análise Regional: <strong>${activeRegion || "Brasil"}</strong>
         </p>
         <p style="margin: 2px 0 0; color: #6b7280; font-size: 12px;">
           Gerado em: ${new Date().toLocaleDateString("pt-BR")}
@@ -1874,34 +1967,34 @@ const Dashboard = ({
     clone.appendChild(footerDiv);
 
     // FIX: Adjust grid columns for PDF readability (A4 Portrait)
-    // 4 cols -> 2 cols (better visibility)
+    // 4 cols -> keep 4 cols for KPIs (compact, fills page well)
     const gridCols4 = clone.querySelectorAll('.grid-cols-4');
-    gridCols4.forEach(el => (el as HTMLElement).style.gridTemplateColumns = 'repeat(2, 1fr)');
-    
-    // 2 cols -> 2 cols (keep)
+    gridCols4.forEach(el => (el as HTMLElement).style.gridTemplateColumns = 'repeat(4, 1fr)');
+
+    // 2 cols -> keep 2 cols
     const gridCols2 = clone.querySelectorAll('.grid-cols-2');
     gridCols2.forEach(el => (el as HTMLElement).style.gridTemplateColumns = 'repeat(2, 1fr)');
-    
+
     // 1 cols -> 1 col
     const gridCols1 = clone.querySelectorAll('.grid-cols-1');
     gridCols1.forEach(el => (el as HTMLElement).style.gridTemplateColumns = '1fr');
 
     // FIX: Set a fixed standard width optimized for A4 scaling
-    // 1080px width scales nicely to A4 (210mm) with readable text
     const fixedWidth = "1080px";
-    clone.style.width = fixedWidth; 
+    clone.style.width = fixedWidth;
     clone.style.maxWidth = fixedWidth;
     clone.style.minWidth = fixedWidth;
     clone.style.height = "auto";
+    clone.style.minHeight = "0";
     clone.style.overflow = "visible";
-    
-    clone.style.position = "relative"; 
+    clone.style.position = "relative";
     clone.style.margin = "0";
-    clone.style.padding = "40px"; // Add padding to the container itself
+    clone.style.padding = "28px";
     clone.style.transform = "none";
     clone.style.backgroundColor = "#ffffff";
     clone.style.left = "0";
     clone.style.top = "0";
+    clone.style.flex = "none";
 
     // --- CHART SNAPSHOT FIX (CRITICAL) ---
     const originalCanvases = Array.from(element.querySelectorAll("canvas"));
@@ -1916,8 +2009,7 @@ const Dashboard = ({
           
           img.src = imgUrl;
           img.style.width = "100%";
-          img.style.height = "auto"; // Maintain aspect ratio
-          img.style.maxHeight = "350px"; // Limit height
+          img.style.height = "auto";
           img.style.display = "block";
           img.style.objectFit = "contain"; 
           
@@ -2045,7 +2137,7 @@ const Dashboard = ({
         pdf.link(x, y, w, h, { url });
       });
 
-      pdf.save(`Relatorio_ClubPetro_${filters.region || "Brasil"}.pdf`);
+      pdf.save(`Relatorio_ClubPetro_${activeRegion || "Brasil"}.pdf`);
     } catch (err) {
       console.error(err);
       setError("Ocorreu um erro ao gerar o PDF. Tente novamente.");
@@ -2674,7 +2766,7 @@ const Dashboard = ({
           </div>
           <button
             className="pdf-button"
-            onClick={() => setIsPdfModalOpen(true)}
+            onClick={() => executePdfGeneration()}
             disabled={isPdfGenerating}
           >
             {isPdfGenerating ? (
