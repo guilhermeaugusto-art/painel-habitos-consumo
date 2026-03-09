@@ -613,17 +613,18 @@ const Chart = React.memo(
       const baseOptions: any = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 0 }, 
-        layout: { padding: 10 },
+        animation: { duration: 600, easing: 'easeOutQuart' },
+        layout: { padding: { top: 8, right: 8, bottom: 4, left: 8 } },
         plugins: {
           legend: {
             display: true,
             position: "bottom",
             labels: {
               usePointStyle: true,
-              boxWidth: 8,
-              padding: 20,
-              font: { family: "Inter", size: 11, weight: "600" },
+              pointStyle: 'circle',
+              boxWidth: 7,
+              padding: 14,
+              font: { family: "Inter", size: 11, weight: "500" },
               color: textColor,
             },
           },
@@ -633,15 +634,27 @@ const Chart = React.memo(
           y: {
             display: options.scales?.y?.display ?? false,
             border: { display: false },
-            grid: { display: false, color: gridColor },
-            ticks: { color: textColor },
+            grid: {
+              display: true,
+              color: theme === 'dark' ? 'rgba(51, 65, 85, 0.5)' : 'rgba(226, 232, 240, 0.6)',
+              drawBorder: false,
+            },
+            ticks: {
+              color: textColor,
+              font: { size: 11, family: "'Inter', sans-serif" },
+              padding: 8,
+            },
             ...(options.scales?.y || {}),
           },
           x: {
             display: options.scales?.x?.display ?? false,
             border: { display: false },
-            grid: { display: false, color: gridColor },
-            ticks: { color: textColor },
+            grid: { display: false },
+            ticks: {
+              color: textColor,
+              font: { size: 11, family: "'Inter', sans-serif" },
+              padding: 6,
+            },
             ...(options.scales?.x || {}),
           },
         },
@@ -661,7 +674,7 @@ const Chart = React.memo(
                   
                   ctx.save();
                   const text = pluginOptions.text;
-                  ctx.font = 'bold 36px Inter';
+                  ctx.font = 'bold 28px Inter';
                   ctx.fillStyle = pluginOptions.color;
                   ctx.textAlign = 'center';
                   ctx.textBaseline = 'middle';
@@ -854,18 +867,19 @@ const GaugeChart = React.memo(
 
     const options = useMemo(
       () => ({
-        cutout: "65%",
+        cutout: "70%",
         aspectRatio: 1.8,
-        animation: { duration: 0 },
+        animation: { duration: 800, easing: 'easeOutQuart' },
         plugins: {
           legend: {
             display: true,
             position: "bottom",
-            labels: { 
-                usePointStyle: true, 
-                boxWidth: 8, 
-                padding: 20, 
-                font: { size: 12 },
+            labels: {
+                usePointStyle: true,
+                pointStyle: 'circle',
+                boxWidth: 7,
+                padding: 14,
+                font: { size: 11 },
                 color: theme === 'dark' ? '#F8FAFC' : '#64748B'
             },
           },
@@ -1454,8 +1468,6 @@ const RegionModal = ({ onSelect }: { onSelect: (region: string) => void }) => {
         <div className="region-modal-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
             viewBox="0 0 24 24"
             fill="currentColor"
             stroke="none"
@@ -1465,8 +1477,7 @@ const RegionModal = ({ onSelect }: { onSelect: (region: string) => void }) => {
         </div>
         <h2 className="region-modal-title">Bem-vindo ao Painel</h2>
         <p className="region-modal-subtitle">
-          Selecione uma região para visualizar os dados personalizados e ter uma
-          experiência mais relevante.
+          Selecione uma região para visualizar os dados personalizados.
         </p>
         <div className="region-modal-buttons">
           {regions.map((region) => (
@@ -1480,20 +1491,7 @@ const RegionModal = ({ onSelect }: { onSelect: (region: string) => void }) => {
           ))}
         </div>
         <button className="region-modal-all-button" onClick={() => onSelect("Brasil")}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3 3h18v18H3zM12 8v8M8 12h8" />
-          </svg>
-          Visualizar Dados do Brasil (Consolidado)
+          Brasil (Consolidado)
         </button>
       </div>
     </div>
@@ -1563,7 +1561,6 @@ const PdfExportModal = ({
         </p>
         <div
           className="region-modal-buttons"
-          style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
         >
           {regions.map((region) => (
             <button
@@ -2914,16 +2911,17 @@ const Dashboard = ({
                       <Chart
                         type="doughnut"
                         data={paymentMethodsChartData}
-                        height="320px"
+                        height="280px"
                         theme={theme}
                         options={{
-                          cutout: "65%",
+                          cutout: "72%",
+                          radius: "92%",
                           plugins: {
                             legend: { position: "right", display: true },
                             datalabels: {
                               display: true,
-                              color: theme === 'dark' ? '#F8FAFC' : '#000',
-                              font: { weight: "800", size: 13 },
+                              color: theme === 'dark' ? '#F8FAFC' : '#475569',
+                              font: { weight: "700", size: 11 },
                               formatter: (value: number, ctx: any) => {
                                 const total =
                                   ctx.chart._metasets[ctx.datasetIndex].total;
@@ -3020,12 +3018,13 @@ const Dashboard = ({
                         data={fidelityDistributionChartData}
                         theme={theme}
                         options={{
-                          cutout: "50%",
+                          cutout: "68%",
+                          radius: "92%",
                           plugins: {
                             legend: { position: "right", display: true },
                             datalabels: {
-                              color: theme === 'dark' ? '#F8FAFC' : '#000',
-                              font: { weight: "800", size: 13 },
+                              color: theme === 'dark' ? '#F8FAFC' : '#475569',
+                              font: { weight: "700", size: 11 },
                               formatter: (value: number, ctx: any) => {
                                 const total =
                                   ctx.chart._metasets[ctx.datasetIndex].total;
@@ -3070,7 +3069,7 @@ const Dashboard = ({
                               color: theme === 'dark' ? '#F8FAFC' : '#fff',
                               anchor: "center",
                               align: "center",
-                              font: { weight: "800", size: 12 },
+                              font: { weight: "700", size: 11 },
                             },
                           },
                           scales: {
@@ -3078,12 +3077,12 @@ const Dashboard = ({
                               display: true,
                               grid: { display: false },
                               ticks: { display: false },
-                              border: { display: true },
+                              border: { display: false },
                             },
-                            y: { display: false, grid: { display: false } },
+                            y: { display: true, grid: { display: false }, border: { display: false } },
                           },
                         }}
-                        height="280px"
+                        height="240px"
                       />
                     )}
                   </div>
@@ -3244,25 +3243,30 @@ const Dashboard = ({
                       <Chart
                         type="radar"
                         data={topPlacesChartData}
-                        height="400px"
+                        height="320px"
                         theme={theme}
                         options={{
                           plugins: {
                             legend: { display: false },
                             datalabels: { display: false },
                           },
+                          elements: {
+                            line: { borderWidth: 2, fill: true },
+                            point: { radius: 3, hoverRadius: 5, backgroundColor: '#fff' },
+                          },
                           scales: {
                             r: {
                               grid: {
                                 display: true,
                                 circular: true,
-                                color: theme === 'dark' ? '#334155' : "#e2e8f0",
+                                color: theme === 'dark' ? 'rgba(51, 65, 85, 0.5)' : "rgba(226, 232, 240, 0.8)",
                               },
-                              angleLines: { display: true, color: theme === 'dark' ? '#334155' : "#e2e8f0" },
+                              angleLines: { display: true, color: theme === 'dark' ? 'rgba(51, 65, 85, 0.4)' : "rgba(226, 232, 240, 0.6)" },
                               ticks: { display: false, backdropColor: "transparent" },
                               pointLabels: {
-                                color: theme === 'dark' ? '#CBD5E1' : "#64748B",
-                                font: { weight: 600, size: 11 },
+                                color: theme === 'dark' ? '#CBD5E1' : "#475569",
+                                font: { weight: '600', size: 10 },
+                                padding: 12,
                               },
                             },
                           },
@@ -3302,12 +3306,11 @@ const Dashboard = ({
                       theme={theme}
                       options={{
                         scales: {
-                          x: { display: true, stacked: false, grid: { display: false } },
+                          x: { display: true, stacked: false, grid: { display: false }, border: { display: false } },
                           y: {
                             display: true,
                             stacked: false,
-                            grid: { display: false },
-                            ticks: { display: false },
+                            border: { display: false },
                           },
                           y1: { display: false, position: "right", beginAtZero: true },
                         },
@@ -3316,7 +3319,7 @@ const Dashboard = ({
                           datalabels: { display: false },
                         },
                       }}
-                      height="350px"
+                      height="300px"
                     />
                   </div>
                 </div>
