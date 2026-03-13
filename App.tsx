@@ -3613,7 +3613,7 @@ const LoginPage = ({
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label htmlFor="Nome">Nome Completo *</label>
+                <label htmlFor="Nome">Seu Nome Completo</label>
                 <input
                   type="text"
                   id="Nome"
@@ -3626,7 +3626,7 @@ const LoginPage = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Email">E-mail *</label>
+                <label htmlFor="Email">E-mail Corporativo</label>
                 <input
                   type="email"
                   id="Email"
@@ -3639,7 +3639,7 @@ const LoginPage = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Telefone">Telefone *</label>
+                <label htmlFor="Telefone">Telefone de Contato</label>
                 <input
                   type="tel"
                   id="Telefone"
@@ -3653,7 +3653,7 @@ const LoginPage = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Cnpj">CNPJ *</label>
+                <label htmlFor="Cnpj">CNPJ do Posto</label>
                 <input
                   type="text"
                   id="Cnpj"
@@ -3667,7 +3667,7 @@ const LoginPage = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Relação">Qual sua relação com o posto? *</label>
+                <label htmlFor="Relação">Sua Relação com o Posto</label>
                 <select
                   id="Relação"
                   name="Relação"
